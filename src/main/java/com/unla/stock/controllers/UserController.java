@@ -29,6 +29,6 @@ public class UserController {
 	public String loginCheck() {
 		//User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		//user.getUserRoles()
-		return "redirect:/home";
+		return "redirect:/index";
 	}
 }
