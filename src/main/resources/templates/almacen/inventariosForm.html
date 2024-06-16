@@ -24,13 +24,27 @@
 		<!-- Page Content -->
 		<div class="container">
 		  <div class="jumbotron">
-		    <h1 class="display-5">Producto</h1>
-		    <form th:action="@{/productos/crearProducto}" method="post" th:object="${producto}">
+		    <h1 class="display-5">Almacen</h1>
+		    <form th:action="@{/almacen/guardar}" method="post" th:object="${almacen}">
 				<input type="hidden" th:field="*{id}" />
 				<div class="mb-3">
 				  <label for="nombre" class="form-label">Nombre</label>
 				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{nombre}">
 				</div>
+				<table class="table">
+				  <thead>
+				    <tr>
+				      <th scope="col">Producto</th>
+					  <th scope="col">Cantidad</th>
+				    </tr>
+				  </thead>
+				  <tbody>
+					<tr th:each="prodAlm : *{productos}">
+						<td><span th:text="${prodAlm.producto.nombre}" /></td>
+						<td><span th:text="${prodAlm.cantidad}" /></td>
+					</tr>
+				  </tbody>
+				</table>
 				<button type="submit" class="btn btn-primary">Enviar</button>
 		  	</form>
 		  	<div th:if="${error != null}" class="alert alert-danger">

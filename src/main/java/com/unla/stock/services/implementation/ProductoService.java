@@ -9,7 +9,7 @@ import com.unla.stock.entities.Producto;
 import com.unla.stock.repositories.IProductoRepository;
 import com.unla.stock.services.IProductoService;
 
-@Service("degreeService")
+@Service("productoService")
 public class ProductoService implements IProductoService{
 
 	private IProductoRepository productoRepository;
