@@ -14,8 +14,8 @@ public class ViewRouteHelper {
 	public final static String PRODUCTOS_FORM = "productos/productosForm";
 	
 	//inventario
-	public final static String ALMACEN = "almacen/inventariosList";
-	public final static String ALMACEN_FORM = "almacen/inventariosForm";
+	public final static String ALMACEN = "almacen/almacenList";
+	public final static String ALMACEN_FORM = "almacen/almacenForm";
 
 	/**** Redirects ****/
 	public final static String ROUTE = "/index";

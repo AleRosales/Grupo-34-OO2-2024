@@ -35,4 +35,14 @@ public class ProductoAlmacen {
 	
 	@CreationTimestamp
 	private LocalDateTime fechActualizacion;
+
+	public ProductoAlmacen(Producto producto, Almacen almacen, int cantidad, LocalDateTime fechActualizacion) {
+		super();
+		this.producto = producto;
+		this.almacen = almacen;
+		this.cantidad = cantidad;
+		this.fechActualizacion = fechActualizacion;
+	}
+	
+	
 }
