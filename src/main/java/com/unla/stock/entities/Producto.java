@@ -19,7 +19,6 @@ public class Producto {
 	
 	@Column(name="nombre", unique=true, nullable=false, length=255)
 	private String nombre;
-<<<<<<< HEAD
 	
 	private float precio;
 
@@ -27,6 +26,5 @@ public class Producto {
 		// TODO Auto-generated method stub
 		
 	}
-=======
->>>>>>> aea540782d019b82e409060c478e73edd680b438
+
 }

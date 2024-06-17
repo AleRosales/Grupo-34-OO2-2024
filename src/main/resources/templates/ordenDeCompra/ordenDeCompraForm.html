@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Stock - Grupo 34</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Font Awesome icons (free version)-->
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
+		<!-- Bootstrap core CSS -->
+		<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+		<link href="/css/modern-business.css" rel="stylesheet" />
+    </head>
+    <body id="page-top">
+		<nav th:replace="fragments/general.html :: nav">
+        </nav>
+		
+		<!-- Page Content -->
+		<div class="container">
+		  <div class="jumbotron">
+		    <h1 class="display-5">Orden de Compra</h1>
+		    <form th:action="@{/ordenDeCompra/guardar}" method="post" th:object="${ordenDeCompra}">
+				<input type="hidden" th:field="*{id}" />
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Producto</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{producto.nombre}">
+				</div>
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Cantidad</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{cantidad}">
+				</div>
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Almacen</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{almacen.nombre}">
+				</div>
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Proveedor</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{proveedor}">
+				</div>
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Estado</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{estado}">
+				</div>
+				<button type="submit" class="btn btn-primary">Enviar</button>
+		  	</form>
+		  	<div th:if="${error != null}" class="alert alert-danger">
+		    	Error al enviar
+		    </div>
+		  </div>
+		</div>
+		<!-- Bootstrap core JavaScript -->
+		<script src="/vendor/jquery/jquery.min.js"></script>
+		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

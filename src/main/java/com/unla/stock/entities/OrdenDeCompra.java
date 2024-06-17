@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,8 +19,8 @@ import lombok.Setter;
 
 @Entity
 @Getter @Setter @NoArgsConstructor
-public class ProductoAlmacen {
-
+public class OrdenDeCompra {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
@@ -33,16 +35,12 @@ public class ProductoAlmacen {
 	
 	private int cantidad;
 	
+	private String proveedor;
+		
+    @Enumerated(EnumType.STRING)
+	private EstadoOrdenCompra estado;
+	
 	@UpdateTimestamp
 	private LocalDateTime fechaActualizacion;
 
-	public ProductoAlmacen(Producto producto, Almacen almacen, int cantidad, LocalDateTime fechaActualizacion) {
-		super();
-		this.producto = producto;
-		this.almacen = almacen;
-		this.cantidad = cantidad;
-		this.fechaActualizacion = fechaActualizacion;
-	}
-	
-	
 }

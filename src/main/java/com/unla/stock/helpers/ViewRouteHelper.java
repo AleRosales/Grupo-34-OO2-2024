@@ -19,13 +19,14 @@ public class ViewRouteHelper {
 
 	/**** Redirects ****/
 	public final static String ROUTE = "/index";
-<<<<<<< HEAD
 
 	//compra
 	public static final String COMPRAS = "compras/comprasList";
 
 	public static final String COMPRAS_FORM = "compras/comprasForm";
-=======
->>>>>>> aea540782d019b82e409060c478e73edd680b438
+
+	//ordenDeCompra
+	public final static String ORDEN_DE_COMPRA = "ordenDeCompra/ordenDeCompraList";
+	public final static String ORDEN_DE_COMPRA_FORM = "ordenDeCompra/ordenDeCompraForm";
 	
 }
