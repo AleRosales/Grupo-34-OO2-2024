@@ -1,6 +1,7 @@
 package com.unla.stock.entities;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -40,6 +41,7 @@ public class Compra {
 		this.cliente = cliente;
 		this.itemsCompra = itemsCompra;
 		this.importe = importe;
+		itemsCompra = new HashSet<>();
 	}
 	
 	public float calcularImporte() {
@@ -56,5 +58,10 @@ public class Compra {
 			itemCompra.getProducto().actualizarStockVenta(itemCompra.getCantidad());
 		}
 	}
+
+//	public void setItemsCompra(Object itemsCompra2) {
+//		this.itemsCompra = (Set<ItemCompra>) itemsCompra2;		
+//	}
+
 
 }

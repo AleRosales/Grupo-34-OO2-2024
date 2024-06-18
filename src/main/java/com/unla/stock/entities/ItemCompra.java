@@ -29,11 +29,14 @@ public class ItemCompra {
 	@JoinColumn(name="compra", nullable=true)
 	private Compra compra;
 	
+	private double importe;
+	
 	public ItemCompra(int id, Producto producto, int cantidad, Compra compra) {
 		this.id = id;
 		this.producto = producto;
 		this.cantidad = cantidad;
 		this.compra = compra;
+		
 	}
 
 	public float calcularImporteItem() {

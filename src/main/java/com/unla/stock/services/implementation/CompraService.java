@@ -1,9 +1,8 @@
 package com.unla.stock.services.implementation;
 
 import java.util.List;
-import java.util.Optional;
 
-import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.unla.stock.entities.Compra;
@@ -12,38 +11,26 @@ import com.unla.stock.services.ICompraService;
 
 @Service("compraService")
 public class CompraService implements ICompraService {
-	private ICompraRepository compraRepository;
-	
-	private ModelMapper modelMapper = new ModelMapper();
-	
-	public CompraService(ICompraRepository compraRepository) {
-		this.compraRepository = compraRepository;
-	}
+	 	@Autowired
+	    private ICompraRepository compraRepository;
 
-	@Override
-	public List<Compra> getAll() {
-		return compraRepository.findAll();
-	}
+	    @Override
+	    public List<Compra> getAllCompras() {
+	        return compraRepository.findAll();
+	    }
 
-	@Override
-	public Optional<Compra> findById(int id) throws Exception {
-		return compraRepository.findById(id);
-	}
+	    @Override
+	    public Compra getCompraById(int id) {
+	        return compraRepository.findById(id).orElse(null);
+	    }
 
-	@Override
-	public Compra insertOrUpdate(Compra compraModel) {
-		Compra  compra = compraRepository.save(modelMapper.map(compraModel, Compra.class));
-		return modelMapper.map(compra, Compra.class);	}
+	    @Override
+	    public Compra saveCompra(Compra compra) {
+	        return compraRepository.save(compra);
+	    }
 
-	@Override
-	public boolean remove(int id) {
-		try {
-			compraRepository.deleteById(id);
-			return true;
-			
-		} catch(Exception e) {
-			return false;	
-		}
-		 
-	}
+	    @Override
+	    public void deleteCompra(int id) {
+	        compraRepository.deleteById(id);
+	    }
 }

@@ -1,69 +1,101 @@
 package com.unla.stock.controllers;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import java.util.ArrayList;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import com.unla.stock.entities.Compra;
+import com.unla.stock.entities.ItemCompra;
 import com.unla.stock.helpers.ViewRouteHelper;
 import com.unla.stock.services.implementation.CompraService;
+import com.unla.stock.services.implementation.ProductoService;
 
 @Controller
-//@PreAuthorize("hasRole('ROLE_CLIENTE')")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 @RequestMapping("/compras")
 public class CompraController {
 
-	private ModelMapper modelMapper = new ModelMapper();
+    @Autowired
+    private CompraService compraService;
+    
+    @Autowired
+    private ProductoService productoService;
 
-	private CompraService compraService;
-	
-	public CompraController(CompraService compraService) {
-		this.compraService = compraService;
-	} 
-	
-	
-	@GetMapping("")
-	public ModelAndView comprasList() {
-		ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS);
-		modelAndView.addObject("compras", compraService.getAll());
-		return modelAndView;
-	}
-	@GetMapping("/{id}")
-	public ModelAndView comprasForm(@PathVariable("id") int id)  throws Exception{
-		ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
-		Compra compra =  modelMapper.map(compraService.findById(id).get(), Compra.class);
+    @GetMapping("")
+    public ModelAndView comprasList() {
+        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS);
+        modelAndView.addObject("compras", compraService.getAllCompras());
+        return modelAndView;
+    }
 
-		if(compra==null) return null;
-		modelAndView.addObject("compra", compra);
-		return modelAndView;
-	}
-	
-	@GetMapping("/nuevo")
-	public ModelAndView nueva(@ModelAttribute("compra") Compra compra) {
-		ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
-		modelAndView.addObject("compra", new Compra());
-		return modelAndView;		
-	}
-	@PostMapping("/crearCompra")
-	public ModelAndView crearCompra(@ModelAttribute("compra") Compra compra) {
-		try {
-			compraService.insertOrUpdate(compra);
-		}catch (Exception e) {
-			ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
-			modelAndView.addObject("compra", compra);
-			modelAndView.addObject("error", e.getMessage());
-			return modelAndView;		
-		}
-		return comprasList();
-	}
-	@PostMapping("/eliminar/{id}")
-	public ModelAndView eliminarProducto(@PathVariable("id") int id) {
-		compraService.remove(id);
-		return comprasList();
-	}
+    @GetMapping("/{id}")
+    public ModelAndView comprasForm(@PathVariable("id") int id) throws Exception {
+        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
+        Compra compra = compraService.getCompraById(id); // Aquí deberías manejar si el id no existe
+
+        modelAndView.addObject("compra", compra);
+        return modelAndView;
+    }
+
+    
+//    @GetMapping("/nuevo")
+//    public ModelAndView nueva(@ModelAttribute("compra") Compra compra) {
+//        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
+//        modelAndView.addObject("compra", new Compra());
+//        return modelAndView;
+//    }
+    
+    public ModelAndView nuevaCompra(Model model) {
+        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
+        Compra compra = new Compra();
+        //compra.setItemsCompra(new ArrayList<>()); // Inicializar lista de ítems
+        model.addAttribute("compra", compra);
+        model.addAttribute("productos", productoService.getAll()); // Obtener todos los productos disponibles
+        return modelAndView;
+    }
+    
+    
+    
+
+//    @PostMapping("/crearCompra")
+//    public ModelAndView crearCompra(@ModelAttribute("compra") Compra compra) {
+//        try {
+//            compraService.saveCompra(compra);
+//        } catch (Exception e) {
+//            ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS_FORM);
+//            modelAndView.addObject("compra", compra);
+//            modelAndView.addObject("error", e.getMessage());
+//            return modelAndView;
+//        }
+//        return comprasList();
+//    }
+    
+    @PostMapping("/crearCompra")
+    public ModelAndView crearCompra(@ModelAttribute("compra") Compra compra) {
+        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.COMPRAS);
+
+        // Lógica para calcular importes y total
+        float total = 0;
+        for (ItemCompra item : compra.getItemsCompra()) {
+            float importe = item.getCantidad() * item.getProducto().getPrecio(); // Calcula el importe según la cantidad y el precio del producto
+            item.setImporte(importe);
+            total += importe;
+        }
+        compra.setImporte(total);
+
+        // Aquí guardas la compra en la base de datos (usando el servicio correspondiente)
+        compraService.saveCompra(compra);
+
+        return modelAndView;
+    }
+
+    @PostMapping("/eliminar/{id}")
+    public ModelAndView eliminarCompra(@PathVariable("id") int id) {
+        compraService.deleteCompra(id);
+        return comprasList();
+    }
 }

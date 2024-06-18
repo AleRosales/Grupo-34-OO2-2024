@@ -22,9 +22,8 @@ public class ViewRouteHelper {
 
 
 	//compra
-	public static final String COMPRAS = "compras/comprasList";
-
-	public static final String COMPRAS_FORM = "compras/comprasForm";
+	public static final String COMPRAS = "compras/index";
+	public static final String COMPRAS_FORM = "compras/form";	
 
 	//ordenDeCompra
 	public final static String ORDEN_DE_COMPRA = "ordenDeCompra/ordenDeCompraList";
