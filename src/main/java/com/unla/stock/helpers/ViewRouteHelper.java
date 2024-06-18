@@ -20,6 +20,7 @@ public class ViewRouteHelper {
 	/**** Redirects ****/
 	public final static String ROUTE = "/index";
 
+
 	//compra
 	public static final String COMPRAS = "compras/comprasList";
 
