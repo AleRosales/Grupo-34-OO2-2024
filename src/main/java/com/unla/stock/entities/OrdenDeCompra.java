@@ -38,7 +38,7 @@ public class OrdenDeCompra {
 	private String proveedor;
 		
     @Enumerated(EnumType.STRING)
-	private EstadoOrdenCompra estado;
+	private EstadoOrdenCompra estado=EstadoOrdenCompra.PENDIENTE;
 	
 	@UpdateTimestamp
 	private LocalDateTime fechaActualizacion;
