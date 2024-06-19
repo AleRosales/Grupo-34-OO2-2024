@@ -1,6 +1,7 @@
 package com.unla.stock.services.implementation;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -55,11 +56,14 @@ public class AlmacenService implements IAlmacenService{
 
 	@Override
 	public ProductoAlmacen entradaProductoAlmacen(Producto producto, int cantidad, Almacen almacen)  throws Exception{
-		ProductoAlmacen prodAlm=this.productoAlmacenRepository.findByProductosAlmacen(producto.getId(),almacen.getId()).get();
-		if(prodAlm!=null) {
+		ProductoAlmacen prodAlm;
+		try {
+			prodAlm=this.productoAlmacenRepository.findByProductosAlmacen(producto.getId(),almacen.getId()).get();
 			prodAlm.setCantidad(cantidad+prodAlm.getCantidad());
-		}else {
+
+		}catch(NoSuchElementException e){
 			 prodAlm=new ProductoAlmacen(producto, almacen, cantidad, LocalDateTime.now());
+
 		}
 		return 	productoAlmacenRepository.save(modelMapper.map(prodAlm, ProductoAlmacen.class));
 		

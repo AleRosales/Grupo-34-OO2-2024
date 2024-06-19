@@ -16,6 +16,7 @@
 		<!-- Bootstrap core CSS -->
 		<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="/css/modern-business.css" rel="stylesheet" />
+		<link href="/css/styles.css" rel="stylesheet">
     </head>
     <body id="page-top">
 		<nav th:replace="fragments/general.html :: nav">
@@ -27,35 +28,45 @@
 		    <h1 class="display-5">Orden de Compra</h1>
 		    <form th:action="@{/ordenDeCompra/guardar}" method="post" th:object="${ordenDeCompra}">
 				<input type="hidden" th:field="*{id}" />
-				<div class="mb-3">
-				  <label for="nombre" class="form-label">Producto</label>
-				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{producto.nombre}">
+				<div class="form-group">
+				  <label for="nombre" class="form-label">Producto:</label>
+			      <select class="form-control" th:field="*{producto}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
+			          <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
+			      </select>
+			  	</div>
+				<div class="form-group">
+				  <label for="nombre" class="form-label">Cantidad:</label>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{cantidad}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				</div>
-				<div class="mb-3">
-				  <label for="nombre" class="form-label">Cantidad</label>
-				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{cantidad}">
+				<div class="form-group">
+				 	 	<label for="nombre" class="form-label">Almacen:</label><br>
+				  <select class="custom-select" th:field="*{almacen}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
+				      <option th:each="almacen : ${almacenes}" th:value="${almacen.id}" th:text="${almacen.nombre}"></option>
+				  </select>
 				</div>
-				<div class="mb-3">
-				  <label for="nombre" class="form-label">Almacen</label>
-				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{almacen.nombre}">
+				<div class="form-group">
+				  <label for="nombre" class="form-label">Proveedor:</label><br>
+				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{proveedor}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				</div>
-				<div class="mb-3">
-				  <label for="nombre" class="form-label">Proveedor</label>
-				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{proveedor}">
+				<div class="form-group">
+				  <label for="Estado" class="form-label">Estado:</label><br>
+				  <select id="Estado" class="custom-select" th:field="*{estado}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
+				      <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
+				  </select>
 				</div>
-				<div class="mb-3">
-				  <label for="nombre" class="form-label">Estado</label>
-				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{estado}">
-				</div>
-				<button type="submit" class="btn btn-primary">Enviar</button>
+				<button type="submit" class="btn btn-primary" th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">Guardar</button>
+				<a class="btn btn-danger" href="/ordenDeCompra" role="button">Cancelar</a>
+
 		  	</form>
 		  	<div th:if="${error != null}" class="alert alert-danger">
-		    	Error al enviar
+				<span th:text="${error}" />
 		    </div>
 		  </div>
 		</div>
 		<!-- Bootstrap core JavaScript -->
-		<script src="/vendor/jquery/jquery.min.js"></script>
-		<script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<script src="https://cdn.startbootstrap.com/sb-forms-latest.js"></script>
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
     </body>
 </html>

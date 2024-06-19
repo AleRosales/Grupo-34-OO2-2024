@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.unla.stock.entities.EstadoOrdenCompra;
 import com.unla.stock.entities.OrdenDeCompra;
 import com.unla.stock.helpers.ViewRouteHelper;
+import com.unla.stock.services.implementation.AlmacenService;
 import com.unla.stock.services.implementation.OrdenDeCompraService;
+import com.unla.stock.services.implementation.ProductoService;
 
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -22,9 +25,15 @@ public class OrdenDeCompraController {
 	private ModelMapper modelMapper = new ModelMapper();
 
 	private OrdenDeCompraService ordenDeCompraService;
+    private ProductoService productoService;
+	private AlmacenService almacenService;
 
-	public OrdenDeCompraController(OrdenDeCompraService ordenDeCompraService) {
+
+	public OrdenDeCompraController(OrdenDeCompraService ordenDeCompraService,ProductoService productoService,AlmacenService inventarioService) {
 		this.ordenDeCompraService = ordenDeCompraService;
+		this.productoService=productoService;
+		this.almacenService = inventarioService;
+
 	}
 
 	@GetMapping("")
@@ -41,6 +50,10 @@ public class OrdenDeCompraController {
 		if (ordenDeCompra == null)
 			return null;
 		modelAndView.addObject("ordenDeCompra", ordenDeCompra);
+		modelAndView.addObject("productos",productoService.getAll());
+		modelAndView.addObject("almacenes",almacenService.getAll());
+		modelAndView.addObject("estados",EstadoOrdenCompra.values());
+
 		return modelAndView;
 	}
 
@@ -48,19 +61,31 @@ public class OrdenDeCompraController {
 	public ModelAndView nuevo(@ModelAttribute("ordenDeCompra") OrdenDeCompra ordenDeCompra) {
 		ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.ORDEN_DE_COMPRA_FORM);
 		modelAndView.addObject("ordenDeCompra", new OrdenDeCompra());
+		modelAndView.addObject("productos",productoService.getAll());
+		modelAndView.addObject("almacenes",almacenService.getAll());
+		modelAndView.addObject("estados",EstadoOrdenCompra.values());
+
 		return modelAndView;
 	}
 
 	@PostMapping("/guardar")
-	public ModelAndView guardarInventario(@ModelAttribute("ordenDeCompra") OrdenDeCompra ordenDeCompra) {
-		try {
-			ordenDeCompraService.insertOrUpdate(ordenDeCompra);
-		} catch (Exception e) {
+	public ModelAndView guardar(@ModelAttribute("ordenDeCompra") OrdenDeCompra ordenDeCompra) throws Exception {
+		//try {
+			ordenDeCompra=ordenDeCompraService.insertOrUpdate(ordenDeCompra);
+			if(ordenDeCompra.getEstado()==EstadoOrdenCompra.ENTREGADO) {
+				//inserta stock en almacen
+				almacenService.entradaProductoAlmacen(ordenDeCompra.getProducto(), ordenDeCompra.getCantidad(), ordenDeCompra.getAlmacen());
+			}
+		/*} catch (Exception e) {
 			ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.ORDEN_DE_COMPRA_FORM);
-			modelAndView.addObject("ordenDeCompra", ordenDeCompra);
+			modelAndView.addObject("ordenDeCompra", new OrdenDeCompra());
+			modelAndView.addObject("productos",productoService.getAll());
+			modelAndView.addObject("almacenes",almacenService.getAll());
+			modelAndView.addObject("estados",EstadoOrdenCompra.values());
 			modelAndView.addObject("error", e.getMessage());
+			System.out.println(e);
 			return modelAndView;
-		}
+		}*/
 		return list();
 	}
 
