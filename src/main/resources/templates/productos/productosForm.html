@@ -16,6 +16,8 @@
 		<!-- Bootstrap core CSS -->
 		<link href="/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
 		<link href="/css/modern-business.css" rel="stylesheet" />
+		<link href="/css/styles.css" rel="stylesheet">
+
     </head>
     <body id="page-top">
 		<nav th:replace="fragments/general.html :: nav">
@@ -30,6 +32,10 @@
 				<div class="mb-3">
 				  <label for="nombre" class="form-label">Nombre</label>
 				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{nombre}">
+				</div>
+				<div class="mb-3">
+				  <label for="nombre" class="form-label">Precio</label>
+				  <input type="number" step="any" class="form-control" name="precio" id="nombre" placeholder="10.25" th:field="*{precio}">
 				</div>
 				<button type="submit" class="btn btn-primary">Enviar</button>
 		  	</form>
