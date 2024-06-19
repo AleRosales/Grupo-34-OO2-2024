@@ -28,33 +28,35 @@
 		    <h1 class="display-5">Orden de Compra</h1>
 		    <form th:action="@{/ordenDeCompra/guardar}" method="post" th:object="${ordenDeCompra}">
 				<input type="hidden" th:field="*{id}" />
-				<div class="input-group mb-3">
-				 <label for="nombre" class="form-label">Producto:</label><br>
-			      <select class="custom-select" th:field="*{producto}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
+				<div class="form-group">
+				  <label for="nombre" class="form-label">Producto:</label>
+			      <select class="form-control" th:field="*{producto}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 			          <option th:each="producto : ${productos}" th:value="${producto.id}" th:text="${producto.nombre}"></option>
 			      </select>
 			  	</div>
-				<div class="mb-3">
+				<div class="form-group">
 				  <label for="nombre" class="form-label">Cantidad:</label>
 				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{cantidad}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				</div>
-				<div class="input-group mb-3">
+				<div class="form-group">
 				 	 	<label for="nombre" class="form-label">Almacen:</label><br>
 				  <select class="custom-select" th:field="*{almacen}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				      <option th:each="almacen : ${almacenes}" th:value="${almacen.id}" th:text="${almacen.nombre}"></option>
 				  </select>
 				</div>
-				<div class="mb-3">
+				<div class="form-group">
 				  <label for="nombre" class="form-label">Proveedor:</label><br>
 				  <input type="text" class="form-control" name="nombre" id="nombre" placeholder="Producto 1" th:field="*{proveedor}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				</div>
-				<div class="input-group mb-3">
+				<div class="form-group">
 				  <label for="Estado" class="form-label">Estado:</label><br>
 				  <select id="Estado" class="custom-select" th:field="*{estado}" required th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">
 				      <option th:each="estado : ${estados}" th:value="${estado}" th:text="${estado}"></option>
 				  </select>
 				</div>
 				<button type="submit" class="btn btn-primary" th:disabled="${ordenDeCompra.estado.name() != 'PENDIENTE'}">Guardar</button>
+				<a class="btn btn-danger" href="/ordenDeCompra" role="button">Cancelar</a>
+
 		  	</form>
 		  	<div th:if="${error != null}" class="alert alert-danger">
 				<span th:text="${error}" />

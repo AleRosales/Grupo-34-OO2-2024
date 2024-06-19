@@ -38,6 +38,8 @@
 				  <input type="number" step="any" class="form-control" name="precio" id="nombre" placeholder="10.25" th:field="*{precio}">
 				</div>
 				<button type="submit" class="btn btn-primary">Enviar</button>
+				<a class="btn btn-danger" href="/productos" role="button">Cancelar</a>
+
 		  	</form>
 		  	<div th:if="${error != null}" class="alert alert-danger">
 		    	Error al enviar
